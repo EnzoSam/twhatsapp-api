@@ -7,6 +7,9 @@ var controller = {
     });
   },
   verify: function (req, res) {
+    console.log(req.query["hub.mode"]);
+    console.log(req.query["hub.verify_token"]);
+
     if (
       req.query["hub.mode"] == "subscribe" &&
       req.query["hub.verify_token"] == process.env.VERIFY_TOKEN

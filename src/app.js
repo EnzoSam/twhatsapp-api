@@ -19,6 +19,6 @@ app.use((req, res, next) => {
      next();
  });
 
-app.use('', wsRoutes);
+app.use('/', wsRoutes);
 
 module.exports = app;

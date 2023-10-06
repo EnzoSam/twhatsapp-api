@@ -22,7 +22,8 @@ var controller = {
   processMessage: async function (request, res) {
     console.log('post ');
     console.log(request.body);
-    try {
+    res.sendStatus(200);
+    try {/*
       WsService.processMessage(request.body)
         .then(() => {
           console.log('ok processMessagePrana');
@@ -32,7 +33,7 @@ var controller = {
           console.log('error processMessagePrana');
           console.log(error);
           //res.sendStatus(200);
-        });
+        });*/
     } catch (ex) {
       console.log(ex);
       //res.sendStatus(200);

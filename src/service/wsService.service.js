@@ -1,10 +1,10 @@
-const admin = require('firebase-admin');
-const db = admin.database();
+//const admin = require('firebase-admin');
+//const db = admin.database();
 
 exports.test = async function () {
   console.log("WSService Ok");
 };
-
+/*
 module.exports.processMessage = processMessage;
 
 function processMessage(body) {
@@ -20,4 +20,4 @@ function processMessage(body) {
 
   return promise;
 }
-
+*/

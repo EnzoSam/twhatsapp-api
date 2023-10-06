@@ -18,14 +18,14 @@ const serviceAccount = {
   auth_provider_x509_cert_url: process.env.AUTH_ORIVIDER_X509_CERT_URL,
   client_x509_cert_url: process.env.CLIENT_X509_CERT_URL,
   universe_domain: process.env.UNIVERSE_DOMAIN
-}
+};
 
 admin.initializeApp(
   {
     credential: admin.credential.cert(serviceAccount),
     databaseURL: process.env.DATABASE_URL
   }
-)
+);
 
 var app = require('./app');
 var port = process.env.PORT || 3999;

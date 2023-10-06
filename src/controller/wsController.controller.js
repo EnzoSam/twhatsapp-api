@@ -20,6 +20,8 @@ var controller = {
     }
   },
   processMessage: async function (request, res) {
+    console.log('post ');
+    console.log(request.body);
     try {
       WsService.processMessage(request.body)
         .then(() => {

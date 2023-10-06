@@ -14,7 +14,7 @@ var controller = {
       req.query["hub.mode"] == "subscribe" &&
       req.query["hub.verify_token"] == process.env.VERIFY_TOKEN
     ) {
-      res.send(req.query["hub.challenge"]);
+      res.status(200).send(req.query["hub.challenge"]);
     } else {
       res.sendStatus(400);
     }

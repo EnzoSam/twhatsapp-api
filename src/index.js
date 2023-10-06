@@ -8,14 +8,14 @@ dotenv.config({
   });
 
 console.log(process.env.DATABASE_URL);
-
+/*
 admin.initializeApp(
   {
     credential: admin.credential.cert(serviceAccount),
     databaseURL: process.env.DATABASE_URL
   }
 )
-
+*/
 var app = require('./app');
 var port = process.env.PORT || 3999;
 

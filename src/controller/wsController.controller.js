@@ -23,7 +23,7 @@ var controller = {
     console.log('post ');
     console.log(request.body);
     res.sendStatus(200);
-    try {/*
+    try {
       WsService.processMessage(request.body)
         .then(() => {
           console.log('ok processMessagePrana');
@@ -33,7 +33,7 @@ var controller = {
           console.log('error processMessagePrana');
           console.log(error);
           //res.sendStatus(200);
-        });*/
+        });
     } catch (ex) {
       console.log(ex);
       //res.sendStatus(200);

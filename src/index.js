@@ -7,6 +7,8 @@ dotenv.config({
     path: path.resolve(__dirname, process.env.NODE_ENV + '.env')
   });
 
+console.log(process.env.DATABASE_URL);
+
 admin.initializeApp(
   {
     credential: admin.credential.cert(serviceAccount),

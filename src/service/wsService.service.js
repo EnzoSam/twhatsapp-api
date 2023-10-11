@@ -44,23 +44,30 @@ function processWebHookMessage(body) {
     try {
       let contact = getContactFromWebhookObject(body);
       if (contact) {
-        let change = getChangeFromWebhookObject(body);
-        if (change) {
-        } else {
-          let message = getMessageFromWebhookObject(body);
-          if (message) {
-            chatService
-              .verifyChat(contact.id)
-              .then((chat) => {
-                message.chatId = chat.id;
-                messageService
-                  .insert(message)
-                  .then((messageUpdated) => {
-                    chat.lastMessage = messageUpdated;
-                    chatService
-                      .actualizarChat(chat)
-                      .then((chatUpdated) => {
-                        resolve(chatUpdated);
+        contactService
+          .verifyContact(contact.id, contact.name)
+          .then((contactVerify) => {
+            let change = getChangeFromWebhookObject(body);
+            if (change) {
+            } else {
+              let message = getMessageFromWebhookObject(body);
+              if (message) {
+                chatService
+                  .verifyChat(contact.id)
+                  .then((chat) => {
+                    message.chatId = chat.id;
+                    messageService
+                      .insert(message)
+                      .then((messageUpdated) => {
+                        chat.lastMessageId = messageUpdated.id;
+                        chatService
+                          .actualizarChat(chat)
+                          .then((chatUpdated) => {
+                            resolve(chatUpdated);
+                          })
+                          .catch((error) => {
+                            reject(error);
+                          });
                       })
                       .catch((error) => {
                         reject(error);
@@ -69,12 +76,12 @@ function processWebHookMessage(body) {
                   .catch((error) => {
                     reject(error);
                   });
-              })
-              .catch((error) => {
-                reject(error);
-              });
-          }
-        }
+              }
+            }
+          })
+          .catch((error) => {
+            reject(error);
+          });
       }
       //db.ref("messages").push(body);
     } catch (ex) {
@@ -189,10 +196,12 @@ function getMessageFromWebhookObject(apiObject) {
     apiObject.entry[0].changes[0].value.messages.length > 0
   ) {
     message = messageService.instanceMessage(
-      apiObject.entry[0].changes[0].value.messages[0].id, null,
+      apiObject.entry[0].changes[0].value.messages[0].id,
+      null,
       apiObject.entry[0].changes[0].value.messages[0].text.body,
       [],
-      apiObject.entry[0].changes[0].value.messages[0].timestamp, 'text'
+      apiObject.entry[0].changes[0].value.messages[0].timestamp,
+      "text"
     );
   }
 

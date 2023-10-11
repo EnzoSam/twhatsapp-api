@@ -44,7 +44,6 @@ function getChatByContactId(_contactId) {
         .orderByChild("contactId")
         .equalTo(_contactId)
         .once("value", (data) => {
-          console.log(data.val());
           resolve(data.val());
         });
     } catch (ex) {

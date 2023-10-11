@@ -108,11 +108,11 @@ function sendTemplateMessage(params) {
       if (template) {
         helper
           .sendMessage(template)
-          .then((data) => {
+          .then(data => {
             if (data.messages && data.messages.length > 0) {
               contactService
                 .verifyContact(params.recipient, params.recipient)
-                .then((contactVerify) => {
+                .then(contactVerify => {
                   let message = messageService.instanceMessage(
                     data.messages[0].id,
                     null,
@@ -123,36 +123,36 @@ function sendTemplateMessage(params) {
                   );
                   chatService
                     .verifyChat(contact.id)
-                    .then((chat) => {
+                    .then(chat => {
                       message.chatId = chat.id;
                       messageService
                         .insert(message)
-                        .then((messageUpdated) => {
+                        .then(messageUpdated => {
                           chat.lastMessageId = messageUpdated.id;
                           chatService
                             .actualizarChat(chat)
-                            .then((chatUpdated) => {
+                            .then(chatUpdated => {
                               resolve(chatUpdated);
                             })
-                            .catch((error) => {
+                            .catch(error => {
                               reject(error);
                             });
                         })
-                        .catch((error) => {
+                        .catch(error => {
                           reject(error);
                         });
                     })
-                    .catch((error) => {
+                    .catch(error => {
                       reject(error);
                     });
                 })
-                .catch((error) => {
+                .catch(error => {
                   reject(error);
                 });
             }
             resolve(data);
           })
-          .catch((error) => {
+          .catch(error => {
             reject({
               code: 500,
               message: "Error en peticion a API WS.",

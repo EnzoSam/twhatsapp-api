@@ -23,7 +23,7 @@ function test1() {
         );
     });*/
 
-    /*
+  /*
   chatService
     .verifyChat("5493751446485")
     .then((dat) => {
@@ -33,14 +33,14 @@ function test1() {
       console.log(err);
     });*/
 
-    chatService.getChatByContactId('5493751446485');
+  chatService.getChatByContactId("5493751446485");
 }
 
 module.exports = {
   test,
   test1,
   processWebHookMessage,
-  sendMessage,
+  sendTemplateMessage,
 };
 
 function processWebHookMessage(body) {
@@ -96,7 +96,7 @@ function processWebHookMessage(body) {
   return promise;
 }
 
-function sendMessage(params) {
+function sendTemplateMessage(params) {
   let promise = new Promise((resolve, reject) => {
     try {
       let template = helper.getTemplateMessageData(
@@ -109,6 +109,47 @@ function sendMessage(params) {
         helper
           .sendMessage(template)
           .then((data) => {
+            if (data.messages && data.messages.length > 0) {
+              contactService
+                .verifyContact(params.recipient, params.recipient)
+                .then((contactVerify) => {
+                  let message = messageService.instanceMessage(
+                    data.messages[0].id,
+                    null,
+                    params,
+                    [],
+                    new Date(),
+                    "template"
+                  );
+                  chatService
+                    .verifyChat(contact.id)
+                    .then((chat) => {
+                      message.chatId = chat.id;
+                      messageService
+                        .insert(message)
+                        .then((messageUpdated) => {
+                          chat.lastMessageId = messageUpdated.id;
+                          chatService
+                            .actualizarChat(chat)
+                            .then((chatUpdated) => {
+                              resolve(chatUpdated);
+                            })
+                            .catch((error) => {
+                              reject(error);
+                            });
+                        })
+                        .catch((error) => {
+                          reject(error);
+                        });
+                    })
+                    .catch((error) => {
+                      reject(error);
+                    });
+                })
+                .catch((error) => {
+                  reject(error);
+                });
+            }
             resolve(data);
           })
           .catch((error) => {

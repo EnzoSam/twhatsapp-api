@@ -7,7 +7,6 @@ var controller = {
     });
   },
   test1: function (req, res) {
-
     service.test1();
 
     return res.status(200).send({
@@ -50,7 +49,7 @@ var controller = {
   },
   sendTemplate(req, res) {
     service
-      .sendTemplate(req.body)
+      .sendTemplateMessage(req.body)
       .then((data) => {
         return res
           .status(200)

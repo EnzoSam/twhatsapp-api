@@ -50,15 +50,14 @@ var controller = {
   sendTemplate(req, res) {
     service
       .sendTemplateMessage(req.body)
-      .then((data) => {
+      .then(data => {
         return res
           .status(200)
           .send({ message: "Enviado correctamente", response: data });
       })
-      .catch(error);
-    {
-      return res.status(error.code).send(error);
-    }
+      .catch((error) => {
+        return res.status(error.code).send(error);
+      });
   },
 };
 

@@ -189,10 +189,10 @@ function getMessageFromWebhookObject(apiObject) {
     apiObject.entry[0].changes[0].value.messages.length > 0
   ) {
     message = messageService.instanceMessage(
-      apiObject.entry[0].changes[0].value.messages[0].id,
+      apiObject.entry[0].changes[0].value.messages[0].id, null,
       apiObject.entry[0].changes[0].value.messages[0].text.body,
       [],
-      apiObject.entry[0].changes[0].value.messages[0].timestamp
+      apiObject.entry[0].changes[0].value.messages[0].timestamp, 'text'
     );
   }
 

@@ -13,7 +13,7 @@ function ref() {
 }
 
 function instanceMessage(_id,_chatId,_content, _changes, _timestamp,_type) {
-  return new Message(_id,_content,_changes, _timestamp,_type);
+  return new Message(_id, _chatId,_content,_changes, _timestamp,_type);
 }
 
 function insert(_message) {

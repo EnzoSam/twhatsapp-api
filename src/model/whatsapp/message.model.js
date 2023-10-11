@@ -3,7 +3,7 @@ class Message {
     this.id = _id;
     this.chatId = _chatId;
     this.content = _content;
-    this.chanes = _changes;
+    this.changes = _changes;
     this.timestamp = _timestamp;
     this.type = _type;
   }

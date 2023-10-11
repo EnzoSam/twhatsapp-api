@@ -97,8 +97,6 @@ function processWebHookMessage(body) {
 }
 
 function sendTemplateMessage(params) {
-
-  console.log(params);
   let promise = new Promise((resolve, reject) => {
     try {
       let template = helper.getTemplateMessageData(
@@ -108,9 +106,12 @@ function sendTemplateMessage(params) {
         params.fileName
       );
       if (template) {
+        console.log(template);
         helper
           .sendMessage(template)
           .then(data => {
+            console.log('data************************');
+            console.log(data);
             if (data.messages && data.messages.length > 0) {
               contactService
                 .verifyContact(params.recipient, params.recipient)

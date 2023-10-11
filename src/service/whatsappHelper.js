@@ -1,6 +1,7 @@
 var axios = require('axios');
 
 function sendMessage(data) {
+  console.log('send message');
   var config = {
     method: 'post',
     url: `https://graph.facebook.com/${process.env.VERSION}/${process.env.PHONE_NUMBER_ID}/messages`,
@@ -10,7 +11,7 @@ function sendMessage(data) {
     },
     data: data
   };
-
+  console.log(config);
   return axios(config);
 }
 

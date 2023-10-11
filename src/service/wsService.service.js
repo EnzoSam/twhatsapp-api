@@ -97,6 +97,8 @@ function processWebHookMessage(body) {
 }
 
 function sendTemplateMessage(params) {
+
+  console.log(params);
   let promise = new Promise((resolve, reject) => {
     try {
       let template = helper.getTemplateMessageData(

@@ -97,7 +97,9 @@ function processWebHookMessage(body) {
 }
 
 function sendTemplateMessage(params) {
+  let conta = 0;
   let promise = new Promise((resolve, reject) => {
+    conta++;
     try {
       let template = helper.getTemplateMessageData(
         params.recipient,
@@ -105,11 +107,14 @@ function sendTemplateMessage(params) {
         params.documentId,
         params.fileName
       );
+      conta++;
       if (template) {
         console.log(template);
+        conta++;
         helper
           .sendMessage(template)
           .then(data => {
+            conta++;
             console.log('data************************');
             console.log(data);
             if (data.messages && data.messages.length > 0) {
@@ -170,7 +175,7 @@ function sendTemplateMessage(params) {
         });
       }
     } catch (ex) {
-      reject({ code: 500, message: "Eror Catch", error: ex });
+      reject({ code: 500, message: "Eror Catch " + conta, error: ex });
     }
   });
 

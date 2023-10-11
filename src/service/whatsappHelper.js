@@ -36,7 +36,7 @@ function getTemplateMessageData(_recipient, _templateName, _documentId, _fileNam
     return undefined;
   if(!_documentId)
     return undefined;
-  if(!_filename)
+  if(!_fileName)
     return undefined;
 
   return JSON.stringify({

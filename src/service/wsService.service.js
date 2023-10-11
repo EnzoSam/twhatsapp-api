@@ -166,10 +166,8 @@ function sendTemplateMessage(params) {
           error: undefined,
         });
       }
-
-      resolve();
     } catch (ex) {
-      reject({ code: 500, message: "Eror", error: ex });
+      reject({ code: 500, message: "Eror Catch", error: ex });
     }
   });
 

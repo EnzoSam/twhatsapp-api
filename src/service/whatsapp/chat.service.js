@@ -41,9 +41,10 @@ function getChatByContactId(_contactId) {
   let promise = new Promise((resolve, reject) => {
     try {
       const chats = ref()
-        .orderByChild("contact/id")
+        .orderByChild("contactId")
         .equalTo(_contactId)
         .once("value", (data) => {
+          console.log(data.val());
           resolve(data.val());
         });
     } catch (ex) {
@@ -58,7 +59,7 @@ function verifyChat(_contactId) {
   let promise = new Promise((resolve, reject) => {
     try {
       const chats = ref()
-        .orderByChild("contact/id")
+        .orderByChild("contactId")
         .equalTo(_contactId)
         .once("value", (data) => {
           if (data.val()) {

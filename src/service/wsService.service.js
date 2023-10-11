@@ -22,6 +22,8 @@ function test1() {
         }
         );
     });*/
+
+    /*
   chatService
     .verifyChat("5493751446485")
     .then((dat) => {
@@ -29,7 +31,9 @@ function test1() {
     })
     .catch((err) => {
       console.log(err);
-    });
+    });*/
+
+    chatService.getChatByContactId('5493751446485');
 }
 
 module.exports = {

@@ -172,6 +172,8 @@ function sendTemplateMessage(params) {
       reject({ code: 500, message: "Eror", error: ex });
     }
   });
+
+  return promise;
 }
 
 function getContactFromWebhookObject(apiObject) {

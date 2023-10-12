@@ -21,11 +21,11 @@ function insert(_chat) {
     try {
       ref()
         .push(_chat)
-        .then((data) => {          
+        .then(data => {          
           _chat.id = data.key;
           resolve(_chat);
         })
-        .catch((error) => {
+        .catch(error => {
           reject(error);
         });
     } catch (ex) {
@@ -62,14 +62,19 @@ function verifyChat(_contactId) {
         .equalTo(_contactId)
         .once("value", (data) => {
           if (data.val()) {
+            console.log('encontro chat***********');
             resolve(data.val());
           } else {
+            console.log('NO encontro chat***********');
             let chat = instanceChat(_contactId);
             insert(chat)
-              .then((chatInserted) => {
+              .then(chatInserted => {
+                console.log('iNSERTO chat***********');
                 resolve(chatInserted);
               })
-              .catch((error) => {
+              .catch(error => {
+                console.log('eRRPR chat***********');
+                console.log(ERROR);
                 reject(error);
               });
           }

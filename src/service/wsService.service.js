@@ -127,6 +127,7 @@ function sendTemplateMessage(params) {
                     Date.now(),
                     "template"
                   );
+                  console.log('verifyChat***********');
                   chatService
                     .verifyChat(contactVerify.id)
                     .then(chat => {

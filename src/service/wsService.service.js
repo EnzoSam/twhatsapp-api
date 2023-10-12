@@ -110,13 +110,13 @@ function sendTemplateMessage(params) {
           .sendMessage(template)
           .then(data => {
             console.log('data ***********************');
-            console.log(data);
+            console.log(data.data);
             if (data.data && data.data.messages && data.data.messages.length > 0) {
               contactService
                 .verifyContact(params.recipient, params.recipient)
                 .then(contactVerify => {
                   let message = messageService.instanceMessage(
-                    data.messages[0].id,
+                    data.data.messages[0].id,
                     null,
                     params,
                     [],
@@ -157,8 +157,7 @@ function sendTemplateMessage(params) {
               reject({
                 code: 500,
                 message: "La API no respondio con valores.",
-                error: error,
-                data:data
+                error: data
               });
             }            
           })

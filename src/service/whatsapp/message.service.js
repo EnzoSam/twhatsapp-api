@@ -43,7 +43,9 @@ function getById(_messageId) {
         .orderByKey()
         .equalTo(_messageId)
         .once("value", (data) => {
-          resolve(data.val());
+          let mess;
+          data.forEach(x=>mess = x.val());            
+          resolve(mess);
         });
     } catch (ex) {
       reject(ex);

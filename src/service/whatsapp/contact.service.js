@@ -43,7 +43,9 @@ function verifyContact(_contactId, _contactName) {
         .equalTo(_contactId)
         .once("value", (data) => {
           if (data.val()) {
-            resolve(data.val());
+            let contact;
+            data.forEach(x=>contact = x.val());            
+            resolve(contact);
           } else {
             let contact = instanceContact(_contactId, _contactName);
             insert(contact)

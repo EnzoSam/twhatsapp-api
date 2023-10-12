@@ -40,10 +40,10 @@ function insert(_chat) {
 function getChatByContactId(_contactId) {
   let promise = new Promise((resolve, reject) => {
     try {
-      const chats = ref()
+         ref()
         .orderByChild("contactId")
         .equalTo(_contactId)
-        .once("value", (data) => {
+        .once("value", data => {
           resolve(data.val());
         });
     } catch (ex) {
@@ -55,26 +55,25 @@ function getChatByContactId(_contactId) {
 }
 
 function verifyChat(_contactId) {
+  let obj;
   let promise = new Promise((resolve, reject) => {
     try {
-      const chats = ref()
+        ref()
         .orderByChild("contactId")
-        .equalTo(_contactId)
-        .once("value", (data) => {
-          if (data.val()) {
-            console.log('encontro chat***********');
-            resolve(data.val());
+        .equalTo(_contactId).limitToFirst(1)
+        .once("value", data => {
+          if (data.val()) { 
+            let chat;
+            data.forEach(x=>chat = x.val());
+            resolve(chat);
           } else {
-            console.log('NO encontro chat***********');
             let chat = instanceChat(_contactId);
             insert(chat)
               .then(chatInserted => {
-                console.log('iNSERTO chat***********');
                 resolve(chatInserted);
               })
               .catch(error => {
                 console.log('eRRPR chat***********');
-                console.log(ERROR);
                 reject(error);
               });
           }

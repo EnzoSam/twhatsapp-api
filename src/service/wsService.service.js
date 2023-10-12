@@ -33,7 +33,10 @@ function test1() {
       console.log(err);
     });*/
 
-  chatService.getChatByContactId("5493751446485");
+  chatService.verifyChat("5493751446485").then(data=>
+    {
+      console.log(data);
+    }).catch(error=>{console.log(error)});
 }
 
 module.exports = {
@@ -129,7 +132,7 @@ function sendTemplateMessage(params) {
                   );
                   console.log('verifyChat***********');
                   chatService
-                    .verifyChat(contactVerify.id)
+                    .verifyChat(params.recipient)
                     .then(chat => {
                       console.log('chat***********');
                       console.log(chat);
@@ -152,6 +155,7 @@ function sendTemplateMessage(params) {
                         });
                     })
                     .catch(error => {
+                      console.log(error);
                       reject(error);
                     });
                 })

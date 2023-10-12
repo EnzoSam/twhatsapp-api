@@ -59,7 +59,6 @@ function processWebHookMessage(body) {
           .verifyContact(contact.id, contact.name)
           .then((contactVerify) => {
             let change = getChangeFromWebhookObject(body);
-            console.log("instanciado...........");
             if (change) {
               changeService
                 .insert(change)
@@ -80,10 +79,8 @@ function processWebHookMessage(body) {
                     .catch((error) => {
                       reject(error);
                     });
-                  console.log("insertado...........");
                 })
                 .catch((error) => {
-                  console.log("error...........");
                   console.log(error);
                   reject(error);
                 });
@@ -264,10 +261,6 @@ function getChangeFromWebhookObject(apiObject) {
       text
     );
   }
-  console.log("apiObject*******************");
-  console.log(apiObject);
-  console.log("change*******************");
-  console.log(change);
   return change;
 }
 

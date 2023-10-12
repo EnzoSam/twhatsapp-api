@@ -33,10 +33,14 @@ function test1() {
       console.log(err);
     });*/
 
-  chatService.verifyChat("5493751446485").then(data=>
-    {
+  chatService
+    .verifyChat("5493751446485")
+    .then((data) => {
       console.log(data);
-    }).catch(error=>{console.log(error)});
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 }
 
 module.exports = {
@@ -53,21 +57,36 @@ function processWebHookMessage(body) {
       if (contact) {
         contactService
           .verifyContact(contact.id, contact.name)
-          .then(contactVerify => {
+          .then((contactVerify) => {
             let change = getChangeFromWebhookObject(body);
-            console.log('instanciado...........');
+            console.log("instanciado...........");
             if (change) {
-                changeService.insert(change).then(changeInserted =>
-                  {
-                    console.log('insertado...........');
-                    resolve(changeInserted);
-                  })
-                  .catch(error=>
-                    { 
-                      console.log('error...........');
-                      console.log(error);
-                        reject(error);
+              changeService
+                .insert(change)
+                .then((changeInserted) => {
+                  chatService
+                    .verifyChat(contact.id)
+                    .then((chat) => {
+                      chat.lastChangeId = changeInserted.id;
+                      chatService
+                        .actualizarChat(chat)
+                        .then((chatUpdated) => {
+                          resolve(changeInserted);
+                        })
+                        .catch((error) => {
+                          reject(error);
+                        });
+                    })
+                    .catch((error) => {
+                      reject(error);
                     });
+                  console.log("insertado...........");
+                })
+                .catch((error) => {
+                  console.log("error...........");
+                  console.log(error);
+                  reject(error);
+                });
             } else {
               let message = getMessageFromWebhookObject(body);
               if (message) {
@@ -98,13 +117,12 @@ function processWebHookMessage(body) {
               }
             }
           })
-          .catch(error => {
+          .catch((error) => {
             reject(error);
           });
-      }
-      else{
-        console.log(body)
-        reject({code:500, message:'Contacto no encontdado', error:body});
+      } else {
+        console.log(body);
+        reject({ code: 500, message: "Contacto no encontdado", error: body });
       }
     } catch (ex) {
       reject(ex);
@@ -126,11 +144,15 @@ function sendTemplateMessage(params) {
       if (template) {
         helper
           .sendMessage(template)
-          .then(data => {
-            if (data.data && data.data.messages && data.data.messages.length > 0) {
+          .then((data) => {
+            if (
+              data.data &&
+              data.data.messages &&
+              data.data.messages.length > 0
+            ) {
               contactService
                 .verifyContact(params.recipient, params.recipient)
-                .then(contactVerify => {
+                .then((contactVerify) => {
                   let message = messageService.instanceMessage(
                     data.data.messages[0].id,
                     null,
@@ -141,44 +163,34 @@ function sendTemplateMessage(params) {
                   );
                   chatService
                     .verifyChat(params.recipient)
-                    .then(chat => {
+                    .then((chat) => {
                       message.chatId = chat.id;
                       messageService
                         .insert(message)
-                        .then(messageUpdated => {
-                          chat.lastMessageId = messageUpdated.id;
-                          chatService
-                            .actualizarChat(chat)
-                            .then(chatUpdated => {
-                              resolve(chatUpdated);
-                            })
-                            .catch(error => {
-                              reject(error);
-                            });
+                        .then((messageUpdated) => {
+                          resolve(messageUpdated);
                         })
-                        .catch(error => {
+                        .catch((error) => {
                           reject(error);
                         });
                     })
-                    .catch(error => {
+                    .catch((error) => {
                       console.log(error);
                       reject(error);
                     });
                 })
-                .catch(error => {
+                .catch((error) => {
                   reject(error);
                 });
-            }
-            else
-            {
+            } else {
               reject({
                 code: 500,
                 message: "La API no respondio con valores.",
-                error: data
+                error: data,
               });
-            }            
+            }
           })
-          .catch(error => {
+          .catch((error) => {
             reject({
               code: 500,
               message: "Error en peticion a API WS.",
@@ -251,11 +263,10 @@ function getChangeFromWebhookObject(apiObject) {
       apiObject.entry[0].changes[0].value.statuses[0].timestamp,
       text
     );
-  
   }
-  console.log('apiObject*******************');
+  console.log("apiObject*******************");
   console.log(apiObject);
-  console.log('change*******************');
+  console.log("change*******************");
   console.log(change);
   return change;
 }

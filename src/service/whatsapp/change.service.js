@@ -6,7 +6,7 @@ function test() {
   console.log("Change sevice Ok");
 }
 
-module.exports = { test, insert, getChatByContactId,verifyChat,instanceChange };
+module.exports = { test, insert, instanceChange };
 
 function ref() {
   return db.ref("change");

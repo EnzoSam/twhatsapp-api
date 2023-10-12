@@ -98,11 +98,14 @@ function processWebHookMessage(body) {
               }
             }
           })
-          .catch((error) => {
+          .catch(error => {
             reject(error);
           });
       }
-      //db.ref("messages").push(body);
+      else{
+        console.log(body)
+        reject({code:500, message:'Contacto no encontdado', error:body});
+      }
     } catch (ex) {
       reject(ex);
     }

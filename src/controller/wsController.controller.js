@@ -14,8 +14,6 @@ var controller = {
     });
   },
   verify: function (req, res) {
-    console.log(req.query["hub.mode"]);
-    console.log(req.query["hub.verify_token"]);
 
     if (
       req.query["hub.mode"] == "subscribe" &&
@@ -27,9 +25,6 @@ var controller = {
     }
   },
   processMessage: async function (request, res) {
-    console.log("post ");
-    console.log(request.body);
-    res.sendStatus(200);
     try {
       service
         .processWebHookMessage(request.body)
@@ -37,7 +32,7 @@ var controller = {
           console.log("ok processMessagePrana");
           res.sendStatus(200);
         })
-        .catch((error) => {
+        .catch(error => {
           console.log("error processMessagePrana");
           console.log(error);
           //res.sendStatus(200);

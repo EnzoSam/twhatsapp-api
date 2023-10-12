@@ -55,8 +55,11 @@ var controller = {
           .status(200)
           .send({ message: "Enviado correctamente", response: data });
       })
-      .catch((error) => {
-        return res.status(error.code).send(error);
+      .catch(error => {
+        if(error && error.code)
+          return res.status(error.code).send(error);
+        else
+          return res.status(500).send(error);
       });
   },
 };

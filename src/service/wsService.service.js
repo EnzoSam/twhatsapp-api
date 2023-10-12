@@ -56,6 +56,14 @@ function processWebHookMessage(body) {
           .then((contactVerify) => {
             let change = getChangeFromWebhookObject(body);
             if (change) {
+                changeService.insert(change).then(changeInserted =>
+                  {
+                    resolve(change);
+                  })
+                  .catch(error=>
+                    { 
+                        reject(error);
+                    });
             } else {
               let message = getMessageFromWebhookObject(body);
               if (message) {
@@ -112,16 +120,10 @@ function sendTemplateMessage(params) {
         helper
           .sendMessage(template)
           .then(data => {
-            console.log('data ***********************');
-            console.log(data.data);
             if (data.data && data.data.messages && data.data.messages.length > 0) {
-              console.log('data.data.messages****************');
-              console.log(data.data.messages);
               contactService
                 .verifyContact(params.recipient, params.recipient)
                 .then(contactVerify => {
-                  console.log('contactVerify***********');
-                  console.log(contactVerify);
                   let message = messageService.instanceMessage(
                     data.data.messages[0].id,
                     null,
@@ -130,12 +132,9 @@ function sendTemplateMessage(params) {
                     Date.now(),
                     "template"
                   );
-                  console.log('verifyChat***********');
                   chatService
                     .verifyChat(params.recipient)
                     .then(chat => {
-                      console.log('chat***********');
-                      console.log(chat);
                       message.chatId = chat.id;
                       messageService
                         .insert(message)

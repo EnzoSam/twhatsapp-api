@@ -112,9 +112,13 @@ function sendTemplateMessage(params) {
             console.log('data ***********************');
             console.log(data.data);
             if (data.data && data.data.messages && data.data.messages.length > 0) {
+              console.log('data.data.messages****************');
+              console.log(data.data.messages);
               contactService
                 .verifyContact(params.recipient, params.recipient)
                 .then(contactVerify => {
+                  console.log('contactVerify***********');
+                  console.log(contactVerify);
                   let message = messageService.instanceMessage(
                     data.data.messages[0].id,
                     null,
@@ -124,8 +128,10 @@ function sendTemplateMessage(params) {
                     "template"
                   );
                   chatService
-                    .verifyChat(contact.id)
+                    .verifyChat(contactVerify.id)
                     .then(chat => {
+                      console.log('chat***********');
+                      console.log(chat);
                       message.chatId = chat.id;
                       messageService
                         .insert(message)

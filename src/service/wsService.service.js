@@ -109,6 +109,8 @@ function sendTemplateMessage(params) {
         helper
           .sendMessage(template)
           .then(data => {
+            console.log('data ***********************');
+            console.log(data);
             if (data.messages && data.messages.length > 0) {
               contactService
                 .verifyContact(params.recipient, params.recipient)
@@ -118,7 +120,7 @@ function sendTemplateMessage(params) {
                     null,
                     params,
                     [],
-                    new Date(),
+                    Date.now(),
                     "template"
                   );
                   chatService
@@ -150,7 +152,15 @@ function sendTemplateMessage(params) {
                   reject(error);
                 });
             }
-            resolve(data);
+            else
+            {
+              reject({
+                code: 500,
+                message: "La API no respondio con valores.",
+                error: error,
+                data:data
+              });
+            }            
           })
           .catch(error => {
             reject({

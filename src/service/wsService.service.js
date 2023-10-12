@@ -111,7 +111,7 @@ function sendTemplateMessage(params) {
           .then(data => {
             console.log('data ***********************');
             console.log(data);
-            if (data.messages && data.messages.length > 0) {
+            if (data.data && data.data.messages && data.data.messages.length > 0) {
               contactService
                 .verifyContact(params.recipient, params.recipient)
                 .then(contactVerify => {

@@ -218,7 +218,7 @@ function getContactFromWebhookObject(apiObject) {
       apiObject.entry[0].changes[0].value.statuses.length > 0 &&
       apiObject.entry[0].changes[0].value.statuses[0].recipient_id
     ) {
-      contactService.instanceContact(
+      contact = contactService.instanceContact(
         apiObject.entry[0].changes[0].value.statuses[0].recipient_id,
         apiObject.entry[0].changes[0].value.statuses[0].recipient_id
       );

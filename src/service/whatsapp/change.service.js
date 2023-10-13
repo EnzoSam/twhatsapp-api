@@ -16,14 +16,15 @@ function instanceChange(_messageId, _status, _timestamp, _text) {
   return new Change(_messageId, _status, _timestamp,_text);
 }
 
-function insert(_chat) {
+function insert(_change) {
   let promise = new Promise((resolve, reject) => {
     try {
       ref()
-        .push(_chat)
+        .push(_change)
         .then(data => {
-          data.set({id :data.key});           
-          resolve(_chat);
+          _change.id = data.key
+          data.set(_change);           
+          resolve(_change);
         })
         .catch((error) => {
           reject(error);

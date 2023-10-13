@@ -21,8 +21,9 @@ function insert(_chat) {
     try {
       ref()
         .push(_chat)
-        .then(data => {          
-          data.set({id: data.key});
+        .then(data => {  
+          _chat.id =data.key;                  
+          data.set(_chat);
           resolve(_chat);
         })
         .catch(error => {

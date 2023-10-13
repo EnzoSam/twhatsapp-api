@@ -60,21 +60,18 @@ function processWebHookMessage(body) {
           .then((contactVerify) => {
             let change = getChangeFromWebhookObject(body);
             if (change) {
-              changeService
+              chatService
+              .verifyChat(contact.id)
+              .then((chat) => {
+                change.chatId = chat.id;
+                changeService
                 .insert(change)
                 .then((changeInserted) => {
+                  chat.lastChangeId = changeInserted.id;
                   chatService
-                    .verifyChat(contact.id)
-                    .then((chat) => {
-                      chat.lastChangeId = changeInserted.id;
-                      chatService
-                        .actualizarChat(chat)
-                        .then((chatUpdated) => {
-                          resolve(changeInserted);
-                        })
-                        .catch((error) => {
-                          reject(error);
-                        });
+                    .actualizarChat(chat)
+                    .then((chatUpdated) => {
+                      resolve(changeInserted);
                     })
                     .catch((error) => {
                       reject(error);
@@ -84,6 +81,10 @@ function processWebHookMessage(body) {
                   console.log(error);
                   reject(error);
                 });
+              })
+              .catch((error) => {
+                reject(error);
+              });
             } else {
               let message = getMessageFromWebhookObject(body);
               if (message) {

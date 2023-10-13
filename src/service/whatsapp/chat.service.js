@@ -12,8 +12,8 @@ function ref() {
   return db.ref("chat");
 }
 
-function instanceChat(_contactId) {
-  return new Chat(_contactId, [], null);
+function instanceChat(_contactId, _chatId) {
+  return new Chat(_contactId, [], null, _chatId);
 }
 
 function insert(_chat) {

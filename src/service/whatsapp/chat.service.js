@@ -64,7 +64,10 @@ function verifyChat(_contactId) {
         .once("value", data => {
           if (data.val()) { 
             let chat;
-            data.forEach(x=>chat = x.val());
+            data.forEach(x=>{
+              chat.id = x.key;
+              chat = x.val()
+            });            
             resolve(chat);
           } else {
             let chat = instanceChat(_contactId);

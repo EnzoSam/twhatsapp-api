@@ -22,7 +22,8 @@ function insert(_message) {
     try {
       ref()
         .push(_message)
-        .then(() => {
+        .then(data => {
+          _message.id = data.key;
           resolve(_message);
         })
         .catch((error) => {
@@ -44,7 +45,10 @@ function getById(_messageId) {
         .equalTo(_messageId)
         .once("value", (data) => {
           let mess;
-          data.forEach(x=>mess = x.val());            
+          data.forEach(x=>{
+            mess.id = x.key;
+            mess = x.val();
+          });            
           resolve(mess);
         });
     } catch (ex) {

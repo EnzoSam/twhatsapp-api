@@ -46,8 +46,8 @@ function getById(_messageId) {
         .once("value", (data) => {
           let mess;
           data.forEach(x=>{
-            mess.id = x.key;
             mess = x.val();
+            mess.id = x.key;            
           });            
           resolve(mess);
         });

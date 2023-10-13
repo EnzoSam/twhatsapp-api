@@ -45,8 +45,8 @@ function verifyContact(_contactId, _contactName) {
           if (data.val()) {
             let contact;
             data.forEach(x=>{
-              contact.id = x.key;
-              contact = x.val();});            
+                 contact = x.val();
+                 contact.id = x.key;});            
             resolve(contact);
           } else {
             let contact = instanceContact(_contactId, _contactName);

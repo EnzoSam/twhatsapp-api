@@ -65,8 +65,8 @@ function verifyChat(_contactId) {
           if (data.val()) { 
             let chat;
             data.forEach(x=>{
-              chat.id = x.key;
-              chat = x.val()
+              chat = x.val();
+              chat.id = x.key;              
             });            
             resolve(chat);
           } else {

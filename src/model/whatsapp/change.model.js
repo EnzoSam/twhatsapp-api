@@ -1,6 +1,5 @@
 class Change {
     constructor(_messageId, _status,_timestamp, _text) {
-        this.id = undefined; 
         this.messageId = _messageId;
         this.status = _status;
         this.timestamp = _timestamp;

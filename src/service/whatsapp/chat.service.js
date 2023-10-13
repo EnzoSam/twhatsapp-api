@@ -22,7 +22,7 @@ function insert(_chat) {
       ref()
         .push(_chat)
         .then(data => {          
-          _chat.id = data.key;
+          data.set({id: data.key});
           resolve(_chat);
         })
         .catch(error => {

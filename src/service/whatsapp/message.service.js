@@ -23,7 +23,6 @@ function insert(_message) {
       ref()
         .push(_message)
         .then(data => {
-          _message.id = data.key;
           resolve(_message);
         })
         .catch((error) => {

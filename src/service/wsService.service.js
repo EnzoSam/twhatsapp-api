@@ -295,9 +295,8 @@ function getMediaUrl(mediaId) {
   return new Promise((resolve, reject) => {
     try {
       helper.getMediaUrl(mediaId).then((data) => {
-        console.log(data);
         if (data && data.data) {
-          resolve(data.data.url);
+          resolve(data.data);
         } else {
           reject({
             error: 500,
@@ -319,15 +318,17 @@ function getMediaUrl(mediaId) {
 function downloadMedia(mediaId) {
   return new Promise((resolve, reject) => {
     try {
-      helper
-        .getMediaUrl(mediaId)
-        .then((url) => {
-
-          console.log(url);
+      getMediaUrl(mediaId)
+        .then(medaData => {
           helper
-            .downloadMedia(url).then(response =>
+            .downloadMedia(medaData.url).then(response =>
               {
-                resolve(response.data);
+                resolve(
+                  {
+                    mimeType:medaData.mime_type,
+                    file: response.data                    
+                  }
+                  );
                 //console.log(JSON.stringify(response.data));
               }
            );

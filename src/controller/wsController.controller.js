@@ -14,7 +14,6 @@ var controller = {
     });
   },
   verify: function (req, res) {
-
     if (
       req.query["hub.mode"] == "subscribe" &&
       req.query["hub.verify_token"] == process.env.VERIFY_TOKEN
@@ -32,7 +31,7 @@ var controller = {
           console.log("ok processMessagePrana");
           res.sendStatus(200);
         })
-        .catch(error => {
+        .catch((error) => {
           console.log("error processMessagePrana");
           console.log(error);
           //res.sendStatus(200);
@@ -45,46 +44,45 @@ var controller = {
   sendTemplate(req, res) {
     service
       .sendTemplateMessage(req.body)
-      .then(data => {
+      .then((data) => {
         return res
           .status(200)
           .send({ message: "Enviado correctamente", response: data });
       })
-      .catch(error => {
-        if(error && error.code)
-          return res.status(error.code).send(error);
-        else
-          return res.status(500).send(error);
+      .catch((error) => {
+        if (error && error.code) return res.status(error.code).send(error);
+        else return res.status(500).send(error);
       });
   },
   getMediaUrl(req, res) {
-
-    service.getMediaUrl(req.params.mediaId).then
-    (url =>
-      {
-        res.status(200).send(url);
-      }).catch(error=>
-        {{
-            if(error && error.code)
-              return res.status(error.code).send(error);
-            else
-              return res.status(500).send(error);          
-        }});
+    service
+      .getMediaUrl(req.params.mediaId)
+      .then((data) => {
+        res.status(200).send(data.url);
+      })
+      .catch((error) => {
+        {
+          if (error && error.code) return res.status(error.code).send(error);
+          else return res.status(500).send(error);
+        }
+      });
   },
   download(req, res) {
+    service
+      .downloadMedia(req.params.mediaId)
+      .then((data) => {
+        res.setHeader("Content-Disposition", "attachment; ");
+        res.setHeader("Content-Type", data.mimeType);
 
-    service.downloadMedia(req.params.mediaId).then
-    (data =>
-      {
-        res.status(200).send(data);
-      }).catch(error=>
-        {{
-            if(error && error.code)
-              return res.status(error.code).send(error);
-            else
-              return res.status(500).send(error);          
-        }});
-  }   
+        res.send(data.file);
+      })
+      .catch((error) => {
+        {
+          if (error && error.code) return res.status(error.code).send(error);
+          else return res.status(500).send(error);
+        }
+      });
+  },
 };
 
 module.exports = controller;

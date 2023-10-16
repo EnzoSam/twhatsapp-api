@@ -77,9 +77,23 @@ function getMediaUrl(mediId)
     headers: {
       'Authorization': `Bearer ${process.env.ACCESS_TOKEN}`,
       'Content-Type': 'application/json'
-    },
-    data: data
+    }
   };
+  return axios(config);
+}
+
+function downloadMedia(mediaUrl)
+{
+  var config = {
+    method: 'get',
+    maxBodyLength: Infinity,
+    url: mediaUrl,
+    headers: {
+      'Authorization': `Bearer ${process.env.ACCESS_TOKEN}`,
+      'Content-Type': 'application/json'
+    }
+  };
+
   return axios(config);
 }
 
@@ -87,5 +101,6 @@ module.exports = {
   sendMessage,
   getTextMessageData,
   getTemplateMessageData,
-  getMediaUrl
+  getMediaUrl,
+  downloadMedia
 };

@@ -9,5 +9,6 @@ router.get("/", WSController.test);
 router.get("/test1", WSController.test1); 
 router.post("/sendtemplate", WSController.sendTemplate); 
 router.get("/media/:mediaId", WSController.getMediaUrl);
+router.get("/media/download/:mediaId", WSController.download);
 
 module.exports = router;

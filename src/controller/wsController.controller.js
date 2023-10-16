@@ -70,7 +70,21 @@ var controller = {
             else
               return res.status(500).send(error);          
         }});
-  }    
+  },
+  download(req, res) {
+
+    service.downloadMedia(req.params.mediaId).then
+    (data =>
+      {
+        res.status(200).send(data);
+      }).catch(error=>
+        {{
+            if(error && error.code)
+              return res.status(error.code).send(error);
+            else
+              return res.status(500).send(error);          
+        }});
+  }   
 };
 
 module.exports = controller;

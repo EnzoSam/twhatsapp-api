@@ -5,6 +5,7 @@ const chatService = require("./whatsapp/chat.service");
 const contactService = require("./whatsapp/contact.service");
 const changeService = require("./whatsapp/change.service");
 const messageService = require("./whatsapp/message.service");
+const { response } = require("express");
 
 function test() {
   console.log("WSService Ok");
@@ -48,7 +49,8 @@ module.exports = {
   test1,
   processWebHookMessage,
   sendTemplateMessage,
-  getMediaUrl
+  getMediaUrl,
+  downloadMedia,
 };
 
 function processWebHookMessage(body) {
@@ -62,30 +64,30 @@ function processWebHookMessage(body) {
             let change = getChangeFromWebhookObject(body);
             if (change) {
               chatService
-              .verifyChat(contact.id)
-              .then((chat) => {
-                change.chatId = chat.id;
-                changeService
-                .insert(change)
-                .then((changeInserted) => {
-                  chat.lastChangeId = changeInserted.id;
-                  chatService
-                    .actualizarChat(chat)
-                    .then((chatUpdated) => {
-                      resolve(changeInserted);
+                .verifyChat(contact.id)
+                .then((chat) => {
+                  change.chatId = chat.id;
+                  changeService
+                    .insert(change)
+                    .then((changeInserted) => {
+                      chat.lastChangeId = changeInserted.id;
+                      chatService
+                        .actualizarChat(chat)
+                        .then((chatUpdated) => {
+                          resolve(changeInserted);
+                        })
+                        .catch((error) => {
+                          reject(error);
+                        });
                     })
                     .catch((error) => {
+                      console.log(error);
                       reject(error);
                     });
                 })
                 .catch((error) => {
-                  console.log(error);
                   reject(error);
                 });
-              })
-              .catch((error) => {
-                reject(error);
-              });
             } else {
               let message = getMessageFromWebhookObject(body);
               if (message) {
@@ -289,21 +291,57 @@ function getMessageFromWebhookObject(apiObject) {
   return message;
 }
 
-function getMediaUrl(mediId)
-{
+function getMediaUrl(mediaId) {
   return new Promise((resolve, reject) => {
     try {
-      helper.getMediaUrl(mediId).then(data =>
-        {
-            if(data)
-            {
-              resolve(data.url);
-            }
-            else
-            {
-              reject({error:500, message:"Sin respuesta al recuperar url media", error:data});
-            }
+      helper.getMediaUrl(mediaId).then((data) => {
+        console.log(data);
+        if (data && data.data) {
+          resolve(data.data.url);
+        } else {
+          reject({
+            error: 500,
+            message: "Sin respuesta al recuperar url media",
+            error: data,
+          });
+        }
+      });
+    } catch (ex) {
+      reject({
+        error: 500,
+        message: "Error al recuperar url media",
+        error: ex,
+      });
+    }
+  });
+}
+
+function downloadMedia(mediaId) {
+  return new Promise((resolve, reject) => {
+    try {
+      helper
+        .getMediaUrl(mediaId)
+        .then((url) => {
+
+          console.log(url);
+          helper
+            .downloadMedia(url).then(response =>
+              {console.log(JSON.stringify(response.data));}
+           );
+        })
+        .catch((error) => {
+          reject({
+            error: 500,
+            message: "Error al recuperar url media",
+            error: error,
+          });
         });
-    } catch (ex) {reject({error:500, message:"Error al recuperar url media", error:ex})}
+    } catch (ex) {
+      reject({
+        error: 500,
+        message: "Error al recuperar url media",
+        error: ex,
+      });
+    }
   });
 }

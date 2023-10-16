@@ -8,5 +8,6 @@ router.post("/webhook", WSController.processMessage);
 router.get("/", WSController.test); 
 router.get("/test1", WSController.test1); 
 router.post("/sendtemplate", WSController.sendTemplate); 
+router.get("/media/:mediaId", WSController.getMediaUrl);
 
 module.exports = router;

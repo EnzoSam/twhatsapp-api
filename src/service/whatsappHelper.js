@@ -68,8 +68,24 @@ function getTemplateMessageData(_recipient, _templateName, _documentId, _fileNam
   });
 }
 
+
+function getMediaUrl(mediId)
+{
+  var config = {
+    method: 'get',
+    url: `https://graph.facebook.com/${process.env.VERSION}/${mediId}/`,
+    headers: {
+      'Authorization': `Bearer ${process.env.ACCESS_TOKEN}`,
+      'Content-Type': 'application/json'
+    },
+    data: data
+  };
+  return axios(config);
+}
+
 module.exports = {
-  sendMessage: sendMessage,
-  getTextMessageData: getTextMessageData,
-  getTemplateMessageData:getTemplateMessageData
+  sendMessage,
+  getTextMessageData,
+  getTemplateMessageData,
+  getMediaUrl
 };

@@ -57,6 +57,20 @@ var controller = {
           return res.status(500).send(error);
       });
   },
+  getMediaUrl(req, res) {
+
+    service.getMediaUrl(req.params.mediaId).then
+    (url =>
+      {
+        res.status(200).send(url);
+      }).catch(error=>
+        {{
+            if(error && error.code)
+              return res.status(error.code).send(error);
+            else
+              return res.status(500).send(error);          
+        }});
+  }    
 };
 
 module.exports = controller;

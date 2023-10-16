@@ -48,6 +48,7 @@ module.exports = {
   test1,
   processWebHookMessage,
   sendTemplateMessage,
+  getMediaUrl
 };
 
 function processWebHookMessage(body) {
@@ -286,4 +287,23 @@ function getMessageFromWebhookObject(apiObject) {
   }
 
   return message;
+}
+
+function getMediaUrl(mediId)
+{
+  return new Promise((resolve, reject) => {
+    try {
+      helper.getMediaUrl(mediId).then(data =>
+        {
+            if(data)
+            {
+              resolve(data.url);
+            }
+            else
+            {
+              reject({error:500, message:"Sin respuesta al recuperar url media", error:data});
+            }
+        });
+    } catch (ex) {reject({error:500, message:"Error al recuperar url media", error:ex})}
+  });
 }

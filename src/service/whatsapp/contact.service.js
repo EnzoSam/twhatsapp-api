@@ -6,7 +6,7 @@ function test() {
   console.log("Contact sevice Ok");
 }
 
-module.exports = { test, insert,verifyContact,instanceContact };
+module.exports = { test, insert: save,verifyContact,instanceContact };
 
 function ref() {
   return db.ref("contact");
@@ -17,7 +17,7 @@ function instanceContact(_contactId, _name)
   return new Contact(_contactId, _name);
 }
 
-function insert(_contact) {
+function save(_contact) {
   let promise = new Promise((resolve, reject) => {
     try {
       ref().child(_contact.id).set(_contact)
@@ -46,11 +46,17 @@ function verifyContact(_contactId, _contactName) {
             let contact;
             data.forEach(x=>{
                  contact = x.val();
-                 contact.id = x.key;});            
+                 contact.id = x.key;});   
+            if(contact.id === contact.name &&
+              contact.id !== _contactName)
+              {
+                contact.name = _contactName;
+                this.save(contact);
+              }         
             resolve(contact);
           } else {
             let contact = instanceContact(_contactId, _contactName);
-            insert(contact)
+            save(contact)
               .then((contactInserted) => {
                 resolve(contactInserted);
               })

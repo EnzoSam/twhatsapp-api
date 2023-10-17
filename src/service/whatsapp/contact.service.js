@@ -51,7 +51,7 @@ function verifyContact(_contactId, _contactName) {
               contact.id !== _contactName)
               {
                 contact.name = _contactName;
-                this.save(contact);
+                save(contact);
               }         
             resolve(contact);
           } else {

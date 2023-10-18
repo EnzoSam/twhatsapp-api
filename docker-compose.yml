@@ -1,0 +1,15 @@
+version: "1"
+services:
+  app:
+    image: twhatsappimage
+    container_name: twhatsappcontainer
+    build: ./
+    restart: always
+    ports: 
+      - 3000:3000
+    environment:
+      - PORT=3000
+      - NODE_ENV=production
+
+
+

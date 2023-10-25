@@ -8,6 +8,7 @@ const requestQueue = async.queue(async (task, callback) => {
       service.processWebHookMessage(task);
     callback(); 
   } catch (error) {
+    console.log(error);
     callback(error); 
   }
 }, 1);
@@ -35,21 +36,14 @@ var controller = {
       res.sendStatus(400);
     }
   },
-  processMessage: function (request, res) {
+  processMessage: function (req, res) {
     try {
-      requestQueue.push(request.body, (error) => {
-        if (error) {
-          console.error('Error al procesar la solicitud:', error);
-          res.sendStatus(200);
-        } else {
-          console.log("ok processMessagePrana");
-          res.sendStatus(200);
-          console.log('processMessage/////////////////');
-        }
-      });
+      console.log('processMessage---------------------');
+      return service.processWebHookMessage(req.body);
     } catch (ex) {
       console.log(ex);
       res.sendStatus(200);
+      return ex;
     }
   },
   sendTemplate(req, res) {

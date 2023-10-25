@@ -4,7 +4,11 @@ var WSController = require('../controller/wsController.controller');
 var router = express.Router();
 
 router.get("/webhook", WSController.verify);  
-router.post("/webhook", WSController.processMessage);
+router.post("/webhook", async(req,res)=>
+{
+   await WSController.processMessage(req, res);
+});
+
 router.get("/", WSController.test); 
 router.get("/test1", WSController.test1); 
 router.post("/sendtemplate", WSController.sendTemplate); 

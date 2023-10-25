@@ -1,4 +1,18 @@
 const service = require("../service/wsService.service");
+const asyncLib = require('async');
+
+
+const taskQueue = asyncLib.queue((taskData, taskCallback) => {        
+  try {
+    service.processWebHookMessage(taskData).then(data=>
+      {
+        taskCallback(); 
+      });    
+  } catch (error) {
+      console.log(error);
+      taskCallback(error);
+  }
+}, 1);
 
 var controller = {
   test: function (req, res) {
@@ -25,8 +39,15 @@ var controller = {
   },
   processMessage: function (req, res) {
     try {
-      console.log('processMessage---------------------');
-      return service.processWebHookMessage(req.body);
+      taskQueue.push(req.body, (error) => {
+        if (error) {
+          console.error('Error al procesar la solicitud:', error);
+          res.sendStatus(200);
+        } else {
+          console.error('OK*********', error);
+          res.sendStatus(200);
+        }
+      });
     } catch (ex) {
       console.log(ex);
       res.sendStatus(200);

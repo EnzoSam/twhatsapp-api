@@ -17,7 +17,7 @@ router.get("/media/download/:mediaId", WSController.download);
 
 const taskQueue = async.queue(async(taskData, taskCallback) => {
     
-    console.log(callback);
+    console.log(taskCallback);
     try {
       await service.processWebHookMessage(taskData);
       taskCallback(null, null); 

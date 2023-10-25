@@ -84,15 +84,32 @@ var controller = {
   },
 };
 
-const requestQueue = async.queue(async (task, callback) => {
+const requestQueue1 = async.queue(async (task, callback) => {
   try {
-    console.log('processMessage---------------------');
-    await service  
-    .processWebHookMessage(task);
+
     callback();
   } catch (error) {
     callback(error);
   }
 }, 1); 
+
+
+
+// Crea una cola de solicitudes con un límite de 1 solicitud a la vez
+const requestQueue = async.queue(async (task, callback) => {
+  try {
+    // Envuelve la función asíncrona en una promesa
+    await new Promise((resolve, reject) => {
+      console.log('processMessage---------------------');
+      service  
+      .processWebHookMessage(task);
+      resolve();
+    });
+
+    callback(); 
+  } catch (error) {
+    callback(error); 
+  }
+}, 1);
 
 module.exports = controller;

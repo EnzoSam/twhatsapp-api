@@ -74,7 +74,7 @@ function processWebHookMessage(body) {
                       chatService
                         .actualizarChat(chat)
                         .then((chatUpdated) => {
-                          resolve(changeInserted);
+                          resolve(chatUpdated);
                         })
                         .catch((error) => {
                           reject(error);

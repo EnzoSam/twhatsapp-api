@@ -56,7 +56,6 @@ function getChatByContactId(_contactId) {
 }
 
 function verifyChat(_contactId) {
-  let obj;
   let promise = new Promise((resolve, reject) => {
     try {
         ref()

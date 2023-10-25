@@ -1,7 +1,7 @@
 var express = require('express');
 var WSController = require('../controller/wsController.controller');
 var service = require('../service/wsService.service');
-const async = require('async');
+const asyncLib = require('async');
 
 var router = express.Router();
 
@@ -15,7 +15,7 @@ router.get("/media/download/:mediaId", WSController.download);
 
 
 
-const taskQueue = async.queue(async(taskData, taskCallback) => {
+const taskQueue = asyncLib.queue(async(taskData, taskCallback) => {
     
     console.log(taskCallback);
     try {

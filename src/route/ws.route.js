@@ -16,6 +16,8 @@ router.get("/media/download/:mediaId", WSController.download);
 
 
 const requestQueue = async.queue(async (task, callback) => {
+    
+    console.log(callback);
     try {
       await service.processWebHookMessage(task);
       callback(); // Llama a callback() cuando la solicitud se ha completado

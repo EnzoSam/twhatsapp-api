@@ -1,17 +1,4 @@
 const service = require("../service/wsService.service");
-const async = require('async');
-
-const requestQueue = async.queue(async (task, callback) => {
-  try {
-    await 
-      console.log('processMessage---------------------');
-      service.processWebHookMessage(task);
-    callback(); 
-  } catch (error) {
-    console.log(error);
-    callback(error); 
-  }
-}, 1);
 
 var controller = {
   test: function (req, res) {
@@ -89,15 +76,5 @@ var controller = {
       });
   },
 };
-
-const requestQueue1 = async.queue(async (task, callback) => {
-  try {
-
-    callback();
-  } catch (error) {
-    callback(error);
-  }
-}, 1); 
-
 
 module.exports = controller;

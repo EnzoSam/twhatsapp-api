@@ -15,15 +15,18 @@ router.get("/media/download/:mediaId", WSController.download);
 
 
 
-const taskQueue = asyncLib.queue(async(taskData, taskCallback) => {
+const taskQueue = asyncLib.queue((taskData, taskCallback) => {
     
     console.log(taskCallback);
     try {
-      await service.processWebHookMessage(taskData);
-      taskCallback(null, null); 
+      service.processWebHookMessage(taskData).then(data=>
+        {
+          console.log('Finalizo cola.****************');
+          taskCallback(); 
+        });    
     } catch (error) {
         console.log(error);
-        taskCallback(error, null);
+        taskCallback(error);
     }
   }, 1);
 
@@ -31,7 +34,7 @@ const taskQueue = asyncLib.queue(async(taskData, taskCallback) => {
   router.post('/webhook', (req, res) => {
     const solicitud = req.body;
   
-    taskQueue.push(solicitud, (error, result) => {
+    taskQueue.push(solicitud, (error) => {
       if (error) {
         console.error('Error al procesar la solicitud:', error);
         res.status(200);

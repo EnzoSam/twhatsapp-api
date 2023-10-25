@@ -23,7 +23,7 @@ var controller = {
       res.sendStatus(400);
     }
   },
-  processMessage: async function (request, res) {
+  processMessage: function (request, res) {
     try {
       service
         .processWebHookMessage(request.body)

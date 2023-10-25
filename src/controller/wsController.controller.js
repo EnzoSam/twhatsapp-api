@@ -24,11 +24,9 @@ var controller = {
       res.sendStatus(400);
     }
   },
-  processMessage: async function (request, res) {
+  processMessage: function (request, res) {
     try {
-      console.log('processMessage---------------------');
-
-      requestQueue.push(request.body, (error) => {
+      requestQueue.push(request.body, error => {
         if (error) {
           console.error('Error al procesar la solicitud:', error);
         } else {
@@ -88,7 +86,8 @@ var controller = {
 
 const requestQueue = async.queue(async (task, callback) => {
   try {
-    await service
+    console.log('processMessage---------------------');
+    await service  
     .processWebHookMessage(task);
     callback();
   } catch (error) {

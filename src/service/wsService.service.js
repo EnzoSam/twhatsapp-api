@@ -120,7 +120,7 @@ function processWebHookMessage(body) {
               {
                 resolve();
                 console.log('Tipo de mensaje no contemplado');
-                console.log(body);
+                console.log(JSON.stringify(body));
               }
             }
           })

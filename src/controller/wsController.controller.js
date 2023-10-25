@@ -44,7 +44,6 @@ var controller = {
           console.error('Error al procesar la solicitud:', error);
           res.sendStatus(200);
         } else {
-          console.error('OK*********', error);
           res.sendStatus(200);
         }
       });

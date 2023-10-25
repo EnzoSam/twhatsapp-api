@@ -9,7 +9,7 @@ function test() {
 module.exports = { test, insert, getById,instanceMessage };
 
 function ref() {
-  return db.ref("message1");
+  return db.ref("message");
 }
 
 function instanceMessage(_id,_chatId,_content, _changes, _timestamp,_type) {

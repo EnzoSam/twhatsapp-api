@@ -25,11 +25,14 @@ var controller = {
   },
   processMessage: async function (request, res) {
     try {
-      await service
-        .processWebHookMessage(request.body)
-        .then(() => {
+      console.log('processMessage---------------------');
+      let prom = await service
+        .processWebHookMessage(request.body);
+        console.log('processMessage++++++++++++++++');
+        prom.then(() => {
           console.log("ok processMessagePrana");
           res.sendStatus(200);
+          console.log('processMessage/////////////////');
         })
         .catch((error) => {
           console.log("error processMessagePrana");

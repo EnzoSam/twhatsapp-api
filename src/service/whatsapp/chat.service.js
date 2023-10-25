@@ -64,15 +64,19 @@ function verifyChat(_contactId) {
         .once("value", data => {
           if (data.val()) { 
             let chat;
+            console.log('chat encontrado *****************');
             data.forEach(x=>{
               chat = x.val();
               chat.id = x.key;              
             });            
+            console.log(chat);
             resolve(chat);
           } else {
+            console.log('chat NOOOO encontrado *****************');
             let chat = instanceChat(_contactId);
             insert(chat)
               .then(chatInserted => {
+                console.log('iNSERTO CHAT *****************');
                 resolve(chatInserted);
               })
               .catch(error => {

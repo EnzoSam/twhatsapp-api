@@ -1,4 +1,5 @@
 const service = require("../service/wsService.service");
+const async = require('async');
 
 var controller = {
   test: function (req, res) {
@@ -26,19 +27,16 @@ var controller = {
   processMessage: async function (request, res) {
     try {
       console.log('processMessage---------------------');
-       await service
-        .processWebHookMessage(request.body);
-        console.log('processMessage++++++++++++++++');
-       // prom.then(() => {
+
+      requestQueue.push(request.body, (error) => {
+        if (error) {
+          console.error('Error al procesar la solicitud:', error);
+        } else {
           console.log("ok processMessagePrana");
           res.sendStatus(200);
           console.log('processMessage/////////////////');
-       // })
-        //.catch((error) => {
-         // console.log("error processMessagePrana");
-          //console.log(error);
-          //res.sendStatus(200);
-       // });
+        }
+      });
     } catch (ex) {
       console.log(ex);
       res.sendStatus(200);
@@ -87,5 +85,15 @@ var controller = {
       });
   },
 };
+
+const requestQueue = async.queue(async (task, callback) => {
+  try {
+    await service
+    .processWebHookMessage(task);
+    callback();
+  } catch (error) {
+    callback(error);
+  }
+}, 1); 
 
 module.exports = controller;

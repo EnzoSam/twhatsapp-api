@@ -116,6 +116,12 @@ function processWebHookMessage(body) {
                     reject(error);
                   });
               }
+              else
+              {
+                resolve();
+                console.log('Tipo de mensaje no contemplado');
+                console.log(body);
+              }
             }
           })
           .catch((error) => {
@@ -276,7 +282,9 @@ function getMessageFromWebhookObject(apiObject) {
     apiObject.entry[0].changes.length > 0 &&
     apiObject.entry[0].changes[0].value &&
     apiObject.entry[0].changes[0].value.messages &&
-    apiObject.entry[0].changes[0].value.messages.length > 0
+    apiObject.entry[0].changes[0].value.messages.length > 0 &&
+    apiObject.entry[0].changes[0].value.messages[0].text &&
+    apiObject.entry[0].changes[0].value.messages[0].text.body    
   ) {
     message = messageService.instanceMessage(
       apiObject.entry[0].changes[0].value.messages[0].id,

@@ -1,6 +1,17 @@
 const service = require("../service/wsService.service");
 const async = require('async');
 
+const requestQueue = async.queue(async (task, callback) => {
+  try {
+    await 
+      console.log('processMessage---------------------');
+      service.processWebHookMessage(task);
+    callback(); 
+  } catch (error) {
+    callback(error); 
+  }
+}, 1);
+
 var controller = {
   test: function (req, res) {
     return res.status(200).send({
@@ -26,9 +37,10 @@ var controller = {
   },
   processMessage: function (request, res) {
     try {
-      requestQueue.push(request.body, error => {
+      requestQueue.push(request.body, (error) => {
         if (error) {
           console.error('Error al procesar la solicitud:', error);
+          res.sendStatus(200);
         } else {
           console.log("ok processMessagePrana");
           res.sendStatus(200);
@@ -93,23 +105,5 @@ const requestQueue1 = async.queue(async (task, callback) => {
   }
 }, 1); 
 
-
-
-// Crea una cola de solicitudes con un límite de 1 solicitud a la vez
-const requestQueue = async.queue(async (task, callback) => {
-  try {
-    // Envuelve la función asíncrona en una promesa
-    await new Promise((resolve, reject) => {
-      console.log('processMessage---------------------');
-      service  
-      .processWebHookMessage(task);
-      resolve();
-    });
-
-    callback(); 
-  } catch (error) {
-    callback(error); 
-  }
-}, 1);
 
 module.exports = controller;

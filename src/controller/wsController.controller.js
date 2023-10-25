@@ -26,22 +26,22 @@ var controller = {
   processMessage: async function (request, res) {
     try {
       console.log('processMessage---------------------');
-      let prom = await service
+       await service
         .processWebHookMessage(request.body);
         console.log('processMessage++++++++++++++++');
-        prom.then(() => {
+       // prom.then(() => {
           console.log("ok processMessagePrana");
           res.sendStatus(200);
           console.log('processMessage/////////////////');
-        })
-        .catch((error) => {
-          console.log("error processMessagePrana");
-          console.log(error);
+       // })
+        //.catch((error) => {
+         // console.log("error processMessagePrana");
+          //console.log(error);
           //res.sendStatus(200);
-        });
+       // });
     } catch (ex) {
       console.log(ex);
-      //res.sendStatus(200);
+      res.sendStatus(200);
     }
   },
   sendTemplate(req, res) {

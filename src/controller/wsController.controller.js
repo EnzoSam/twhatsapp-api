@@ -23,9 +23,9 @@ var controller = {
       res.sendStatus(400);
     }
   },
-  processMessage: function (request, res) {
+  processMessage: async function (request, res) {
     try {
-      service
+      await service
         .processWebHookMessage(request.body)
         .then(() => {
           console.log("ok processMessagePrana");
